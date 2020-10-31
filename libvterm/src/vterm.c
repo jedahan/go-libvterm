@@ -75,6 +75,7 @@ void vterm_free(VTerm *vt)
 
   vterm_allocator_free(vt, vt->parser.strbuffer);
   vterm_allocator_free(vt, vt->outbuffer);
+  vterm_allocator_free(vt, vt->tmpbuffer);
 
   vterm_allocator_free(vt, vt);
 }
@@ -379,4 +380,21 @@ void vterm_copy_cells(VTermRect dest,
       VTermPos srcpos = { pos.row + downward, pos.col + rightward };
       (*copycell)(pos, srcpos, user);
     }
+}
+
+void vterm_check_version(int major, int minor)
+{
+  if(major != VTERM_VERSION_MAJOR) {
+    fprintf(stderr, "libvterm major version mismatch; %d (wants) != %d (library)\n",
+        major, VTERM_VERSION_MAJOR);
+    exit(1);
+  }
+
+  if(minor > VTERM_VERSION_MINOR) {
+    fprintf(stderr, "libvterm minor version mismatch; %d (wants) > %d (library)\n",
+        minor, VTERM_VERSION_MINOR);
+    exit(1);
+  }
+
+  // Happy
 }
