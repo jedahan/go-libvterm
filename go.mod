@@ -1,4 +1,4 @@
-module github.com/ddevault/go-libvterm
+module github.com/jedahan/go-libvterm
 
 go 1.12
 
